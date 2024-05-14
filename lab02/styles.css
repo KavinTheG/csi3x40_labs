@@ -1,0 +1,18 @@
+.contact {
+    text-align: center;
+}
+
+.experience-header {
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+.experience-header p {
+    justify-content: flex-end;
+    margin-left: auto;
+    display: flex;
+}
+
+
