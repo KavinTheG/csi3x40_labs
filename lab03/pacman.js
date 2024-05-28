@@ -1,5 +1,9 @@
+var c_index;
+
+
+
 var createGame = function(n) {
-    var c_index = (Math.floor(Math.random() * n));
+    c_index = (Math.floor(Math.random() * n));
     var g_index; // Ghost index
     var f_index; // fruit index
     
@@ -21,7 +25,7 @@ var createGame = function(n) {
         } else if (i == f_index) {
             game_board[i] = "@";
         } else {
-            game_board[i] = "*";
+            game_board[i] = ".";
         }
     }
     
@@ -29,4 +33,33 @@ var createGame = function(n) {
 };
 
 
-console.log(createGame(10));
+var moveLeft = function(game_board) {
+    // Move the ghost left
+    if (c_index <= 0)  
+        return Error("Cant move left");
+    
+    // Avoids consuming any items.
+    game_board[c_index] = game_board[c_index].replace('C', ''); game_board[c_index] = game_board[c_index].replace('C', '');
+    c_index--;
+    game_board[c_index] = game_board[c_index] + "C";
+
+    return game_board;
+};
+
+var moveRight = function (game_board) {
+    // Move the ghost left
+    if (c_index >= game_board.length - 1)
+        return Error("Cant move right");
+
+    // Avoids consuming any items.
+    game_board[c_index] = game_board[c_index].replace('C', '');
+    c_index++;
+    game_board[c_index] = game_board[c_index] + "C";
+
+    return game_board;
+};
+
+game = createGame(10);
+console.log(game);
+console.log(moveLeft(game));
+console.log(moveRight(game));
