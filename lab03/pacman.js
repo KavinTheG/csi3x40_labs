@@ -1,5 +1,5 @@
 var c_index;
-
+var score = 0;
 
 
 var createGame = function(n) {
@@ -43,6 +43,7 @@ var moveLeft = function(game_board) {
     c_index--;
     game_board[c_index] = game_board[c_index] + "C";
 
+    checkPellet(game_board, c_index);
     return game_board;
 };
 
@@ -56,10 +57,21 @@ var moveRight = function (game_board) {
     c_index++;
     game_board[c_index] = game_board[c_index] + "C";
 
+    checkPellet(game_board, c_index);
     return game_board;
 };
+
+
+var checkPellet = function(game_board, index) {
+    if (game_board[index] == ".") {
+        score++;
+    }
+}
+
 
 game = createGame(10);
 console.log(game);
 console.log(moveLeft(game));
 console.log(moveRight(game));
+
+
