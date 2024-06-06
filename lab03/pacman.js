@@ -1,12 +1,23 @@
+
+// Keep a track of the index of the pacman
 var c_index;
+var g_index; // Ghost index
+
+// Keep a track on the score
 var score = 0;
+
+// Keep a track on the number of pellets
+var pelletNum = 0;
+
+// Keep a track on the level
+var level = 1;
 
 
 var createGame = function(n) {
     c_index = (Math.floor(Math.random() * n));
-    var g_index; // Ghost index
     var f_index; // fruit index
-    
+    pelletNum = n - 2;
+
     do {
         g_index = Math.floor(Math.random() * n);
     } while (g_index == c_index);
@@ -21,7 +32,7 @@ var createGame = function(n) {
         if (i == c_index) {
             game_board[i] = "C";
         } else if (i == g_index) {
-            game_board[i] = "^";
+            game_board[i] = "^.";
         } else if (i == f_index) {
             game_board[i] = "@";
         } else {
@@ -39,11 +50,15 @@ var moveLeft = function(game_board) {
         return Error("Cant move left");
     
     // Avoids consuming any items.
-    game_board[c_index] = game_board[c_index].replace('C', ''); game_board[c_index] = game_board[c_index].replace('C', '');
+    game_board[c_index] = '';
     c_index--;
-    game_board[c_index] = game_board[c_index] + "C";
 
+    // Checks for pellets 
     checkPellet(game_board, c_index);
+
+    game_board[c_index] = "C";
+
+    
     return game_board;
 };
 
@@ -53,11 +68,12 @@ var moveRight = function (game_board) {
         return Error("Cant move right");
 
     // Avoids consuming any items.
-    game_board[c_index] = game_board[c_index].replace('C', '');
+    game_board[c_index] = '';
     c_index++;
-    game_board[c_index] = game_board[c_index] + "C";
 
     checkPellet(game_board, c_index);
+    game_board[c_index] = game_board[c_index] + "C";
+
     return game_board;
 };
 
@@ -65,7 +81,30 @@ var moveRight = function (game_board) {
 var checkPellet = function(game_board, index) {
     if (game_board[index] == ".") {
         score++;
+        pelletNum--;
+
+        if (pelletNum == 0) {
+            level++;
+            game_board = createGame(level * 10);
+        }
     }
+}
+
+var ghostMovement = function(game_board) {
+    var randomIndex = function(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    var randomDirection = Math.random() < 0.5 ? 0 : 1; // 0 = left, 1 = right
+
+    setInterval(function() {
+        if (randomDirection == 0) {
+            moveLeft(game_board);
+        } else {
+            moveRight(game_board);
+        }
+    }, 2000);
+
 }
 
 
